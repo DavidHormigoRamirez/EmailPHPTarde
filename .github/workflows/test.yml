@@ -2,10 +2,19 @@ name: Test PHP
 on:
     push:
         branches: 
-            - main
+            - jesusrios
     workflow_dispatch:
 jobs:
     test:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v6
+
+            - name: Set up composer
+              uses: php-actions/composer@v6
+
+            - name : Install dependencies
+              run: composer install
+
+            - name: Run tests
+              run: vendor/bin/phpunit tests
