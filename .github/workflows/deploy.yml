@@ -1,10 +1,21 @@
 name: Deploy application
 on: 
-    push:
-        branches:
-          - main
+    workflow_run:
+        workflows: [Test PHP]
+        types:
+            - completed
 jobs:
     deploy:
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v6
+            - name: Login to AWS
+              uses: aws-actions/configure-aws-credentials@v5.1.1
+              with:
+                aws-region: us-east-1
+                aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+                aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
+                aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+            - name: Trigger AWS CodeDeploy
+              run: aws deploy create-deployment --application-name "fullstackapp" --github-location repository=${{ github.repository }},commitID=${{ github.sha }}
