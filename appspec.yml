@@ -5,8 +5,17 @@ files:
       destination: /var/www/php
       
 hooks:
+    ApplicationStop:
+      - location: codedeploy-scripts/appstop.sh
+        timeout: 300
+        runas: root
     BeforeInstall:
-        - location: codedeploy-scripts/beforeinstall.sh
-          timeout: 60
-          runas: root
+      - location: codedeploy-scripts/beforeinstall.sh
+        timeout: 300
+        runas: root
+    ApplicationStart:
+      - location: codedeploy-scripts/appstart.sh
+        timeout: 300
+        runas: root
+
     
