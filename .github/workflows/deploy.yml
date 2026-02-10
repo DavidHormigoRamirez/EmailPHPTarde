@@ -18,4 +18,4 @@ jobs:
                 aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
                 aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
             - name: Trigger AWS CodeDeploy
-              run: aws deploy create-deployment --application-name "fullstackapp" --github-location repository=${{ github.repository }},commitID=${{ github.sha }}
+              run: aws deploy create-deployment --application-name "fullstackapp" --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
